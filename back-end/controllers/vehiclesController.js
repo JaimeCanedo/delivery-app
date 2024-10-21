@@ -26,9 +26,9 @@ const getVehicleById = async (req, res) => {
 };
 
 const createVehicle = async (req, res) => {
-    const { name, email, phone, password, user_type, value_review } = req.body;
+    const { driver_id, brand, model, year, vehicle_number, vehicle_type, passenger_capacity } = req.body;
     try {
-        const newVehicle = await vehiclesModel.createVehicle(name, email, phone, password, user_type, value_review);
+        const newVehicle = await vehiclesModel.createVehicle(driver_id, brand, model, year, vehicle_number, vehicle_type, passenger_capacity);
         return res.status(201).json(newVehicle);  // Retornar para detener ejecución después de la respuesta
     } catch (error) {
         console.error('Error al registrar vehiculo:', error);
@@ -38,9 +38,9 @@ const createVehicle = async (req, res) => {
 
 const updateVehicle = async (req, res) => {
     const { id } = req.params;
-    const { name, email, phone, password, user_type, value_review } = req.body;
+    const { brand, model, year, vehicle_number, vehicle_type, passenger_capacity } = req.body;
     try {
-        const updatedVehicle = await vehiclesModel.updateVehicle(id, name, email, phone, password, user_type, value_review);
+        const updatedVehicle = await vehiclesModel.updateVehicle(brand, model, year, vehicle_number, vehicle_type, passenger_capacity, id);
         if (updatedVehicle) {
             return res.json(updatedVehicle);  // Retornar para evitar múltiples respuestas
         } else {

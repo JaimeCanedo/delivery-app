@@ -26,9 +26,9 @@ const getTripById = async (req, res) => {
 };
 
 const createTrip = async (req, res) => {
-    const { name, email, phone, password, user_type, value_review } = req.body;
+    const { id_passenger, id_driver, id_vehicle, origin, destination, trip_type, time, price, status, driver_review, passenger_review } = req.body;
     try {
-        const newTrip = await tripsModel.createTrip(name, email, phone, password, user_type, value_review);
+        const newTrip = await tripsModel.createTrip(id_passenger, id_driver, id_vehicle, origin, destination, trip_type, time,  price, status, driver_review, passenger_review);
         return res.status(201).json(newTrip);  // Retornar para detener ejecución después de la respuesta
     } catch (error) {
         console.error('Error al registrar viaje:', error);
@@ -38,9 +38,9 @@ const createTrip = async (req, res) => {
 
 const updateTrip = async (req, res) => {
     const { id } = req.params;
-    const { name, email, phone, password, user_type, value_review } = req.body;
+    const { origin, destination, trip_type, price, status} = req.body;
     try {
-        const updatedTrip = await tripsModel.updateTrip(id, name, email, phone, password, user_type, value_review);
+        const updatedTrip = await tripsModel.updateTrip(origin, destination, trip_type, price, status, id);
         if (updatedTrip) {
             return res.json(updatedTrip);  // Retornar para evitar múltiples respuestas
         } else {

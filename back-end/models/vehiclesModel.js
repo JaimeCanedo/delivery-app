@@ -21,7 +21,7 @@ const getVehicleById = async (id) => {
 // Crear un nuevo usuario
 const createVehicle = async (driver_id, brand, model, year, vehicle_number, vehicle_type, passenger_capacity) => {
     try {
-        const query = 'INSERT INTO vehiculos (conductor_id , marca, modelo, año, placa, tipo_vehiculo, capacidad_asiento) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+        const query = 'INSERT INTO vehiculos (conductor_id , marca, modelo, año, placa, tipo_vehiculo, capacidad_asientos) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *';
         const values = [driver_id, brand, model, year, vehicle_number, vehicle_type, passenger_capacity];
         const result = await pool.query(query, values);
         return result.rows[0];  // Retorna el usuario creado
@@ -31,7 +31,7 @@ const createVehicle = async (driver_id, brand, model, year, vehicle_number, vehi
 };
 
 // Actualizar un usuario
-const updateVehicle = async (brand, model, year, vehicle_number, vehicle_type, passenger_capacity) => {
+const updateVehicle = async (brand, model, year, vehicle_number, vehicle_type, passenger_capacity, id) => {
     try {
         const query = 'UPDATE vehiculos SET marca = $1, modelo = $2, año = $3, placa = $4, tipo_vehiculo = $5, capacidad_asientos = $6 WHERE id = $7 RETURNING *';
         const values = [brand, model, year, vehicle_number, vehicle_type, passenger_capacity, id];

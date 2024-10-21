@@ -19,10 +19,10 @@ const getTripById = async (id) => {
 };
 
 // Crear un nuevo usuario
-const createTrip = async (id_passenger, id_driver, id_vehicle, origin, destination, trip_type, price, status, driver_review, passenger_review) => {
+const createTrip = async (id_passenger, id_driver, id_vehicle, origin, destination, trip_type, time, price, status, driver_review, passenger_review) => {
     try {
-        const query = 'INSERT INTO viajes (pasajero_id, conductor_id, vehiculo_id, origen, destino, tipo_viaje, costo, estado, calificacion_piloto, calificacion_pasajero) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
-        const values = [id_passenger, id_driver, id_vehicle, origin, destination, trip_type, price, status, driver_review, passenger_review];
+        const query = 'INSERT INTO viajes (pasajero_id, conductor_id, vehiculo_id, origen, destino, tipo_viaje, fecha_hora_inicio, costo, estado, calificacion_piloto, calificacion_pasajero) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *';
+        const values = [id_passenger, id_driver, id_vehicle, origin, destination, trip_type, time, price, status, driver_review, passenger_review];
         const result = await pool.query(query, values);
         return result.rows[0];  // Retorna el usuario creado
     } catch (error) {
@@ -34,7 +34,7 @@ const createTrip = async (id_passenger, id_driver, id_vehicle, origin, destinati
 const updateTrip = async (origin, destination, trip_type, price, status, id) => {
     try {
         const query = 'UPDATE viajes SET origen = $1, destino = $2, tipo_viaje = $3, costo = $4, estado = $5 WHERE id = $6 RETURNING *';
-        const values = [id_passenger, id_driver, id_vehicle, origin, destination, trip_type, price, status, driver_review, passenger_review, id];
+        const values = [ origin, destination, trip_type, price, status, id];
         const result = await pool.query(query, values);
         return result.rows[0];  // Retorna el usuario actualizado
     } catch (error) {
