@@ -21,9 +21,9 @@ const loginUser = async (req, res) => {
 
             // Redirigir según el tipo de usuario
             if (tipoUsuario === 'conductor') {
-                return res.redirect('/conductor-dashboard');
+                return res.redirect('/api/vehicles/');
             } else if (tipoUsuario === 'pasajero') {
-                return res.redirect('/pasajero-dashboard');
+                return res.redirect('/api/trips/');
             } else {
                 return res.status(400).send('Tipo de usuario no reconocido');
             }
