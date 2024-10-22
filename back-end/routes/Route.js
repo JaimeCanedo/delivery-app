@@ -11,6 +11,7 @@ const router = new Router();
 
 
 router.get('/users/', usersController.getAll);
+router.post('/login', usersController.loginUser);
 router.get('/users/:id', usersController.getUserById);
 router.post('/users/', usersController.createUser);
 router.put('/users/:id', usersController.updateUser);

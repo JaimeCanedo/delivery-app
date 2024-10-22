@@ -6,6 +6,17 @@ const findAll = async () => {
     return rows;
 };
 
+export const authUser = async (name, password) => {
+    try {
+        const query = "SELECT tipo_usuario FROM usuarios WHERE nombre = $1 AND contraseña = $2";
+        const values = [name, password];
+        const {rows} = await pool.query(query, values);
+        return rows[0];  // Retorna el usuario encontrado o undefined si no existe
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Buscar un usuario por ID
 const getUserById = async (id) => {
     try {
@@ -55,7 +66,8 @@ const deleteUser = async (id) => {
 };
 
 export const usersModel = {
-    findAll, 
+    findAll,
+    authUser, 
     getUserById,
     createUser, 
     updateUser,

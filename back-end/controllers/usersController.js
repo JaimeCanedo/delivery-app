@@ -1,4 +1,5 @@
 import { usersModel } from "../models/usersModel.js";
+import { authUser } from '../models/usersModel.js';
 
 const getAll = async (req, res) => {
     try {
@@ -7,6 +8,31 @@ const getAll = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener todos los usuarios:', error);
         return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+const loginUser = async (req, res) => {
+    const { name, password } = req.body;
+    try {
+        const user = await authUser(name, password);
+
+        if (user) {
+            const tipoUsuario = user.tipo_usuario;
+
+            // Redirigir según el tipo de usuario
+            if (tipoUsuario === 'conductor') {
+                return res.redirect('/conductor-dashboard');
+            } else if (tipoUsuario === 'pasajero') {
+                return res.redirect('/pasajero-dashboard');
+            } else {
+                return res.status(400).send('Tipo de usuario no reconocido');
+            }
+        } else {
+            return res.status(401).send('Usuario o contraseña incorrectos');
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send('Error en el servidor');
     }
 };
 
@@ -69,6 +95,7 @@ const deleteUser = async (req, res) => {
 
 export const usersController = {
     getAll,
+    loginUser,
     getUserById, 
     createUser,
     updateUser,
