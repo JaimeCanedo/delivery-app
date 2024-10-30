@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './login.css'; // Importa tu archivo CSS personalizado
 
 function LoginForm() {
@@ -10,6 +11,7 @@ function LoginForm() {
     user_type: '',
   });
   const [isLogin, setIsLogin] = useState(true); // Estado para controlar si está en modo login o registro
+  const navigate = useNavigate(); // Hook para navegar entre rutas
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,7 +34,14 @@ function LoginForm() {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        // Aquí puedes agregar lógica adicional después de iniciar sesión o registrarse
+        if (isLogin && data.user_type) {
+          // Redirigir según el tipo de usuario
+          if (data.user_type === 'conductor') {
+            navigate('/conductor-dashboard'); // Redirige a la página del conductor
+          } else if (data.user_type === 'pasajero') {
+            navigate('/pasajero-dashboard'); // Redirige a la página del pasajero
+          }
+        }
       })
       .catch(error => console.error('Error:', error));
   };
