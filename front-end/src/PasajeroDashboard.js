@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; // Puedes crear un archivo CSS personalizado
+import './estilos/style.css'; // Puedes crear un archivo CSS personalizado
 
 function PasajeroDashboard() {
   return (

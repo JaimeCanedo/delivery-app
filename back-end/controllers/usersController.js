@@ -15,28 +15,16 @@ const loginUser = async (req, res) => {
     const { name, password } = req.body;
     try {
         const user = await authUser(name, password);
-        console.log("Contraseña recibida:", password);  // Verificar qué valor llega al servidor
-        console.log("Usuario recibido:", name);  // Verificar qué valor llega al servidor
 
         if (user) {
             const tipoUsuario = user.tipo_usuario;
-
-            // Redirigir según el tipo de usuario
-            if (tipoUsuario === 'conductor') {
-                console.log(tipoUsuario);
-                return res.redirect('/api/vehicles/');
-            } else if (tipoUsuario === 'pasajero') {
-                console.log(tipoUsuario);
-                return res.redirect('/api/');
-            } else {
-                return res.status(400).send('Tipo de usuario no reconocido');
-            }
+            return res.json({ tipo_usuario: tipoUsuario, message: 'Inicio de sesión exitoso' });
         } else {
-            return res.status(401).send('Usuario o contraseña incorrectos');
+            return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).send('Error en el servidor');
+        return res.status(500).json({ message: 'Error en el servidor' });
     }
 };
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './login.css'; // Importa tu archivo CSS personalizado
+import './estilos/login.css'; // Importa tu archivo CSS personalizado
 
 function LoginForm() {
   const [formData, setFormData] = useState({
@@ -10,9 +10,11 @@ function LoginForm() {
     phone: '',
     user_type: '',
   });
-  const [isLogin, setIsLogin] = useState(true); // Estado para controlar si está en modo login o registro
-  const navigate = useNavigate(); // Hook para navegar entre rutas
+  const [isLogin, setIsLogin] = useState(true); 
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
+  // Actualiza el estado cuando los inputs cambian
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -21,9 +23,11 @@ function LoginForm() {
     });
   };
 
+  // Manejo del formulario de login o registro
   const handleSubmit = (e) => {
     e.preventDefault();
     const url = isLogin ? 'http://localhost:5000/api/login' : 'http://localhost:5000/api/users';
+    
     fetch(url, {
       method: 'POST',
       headers: {
@@ -31,19 +35,28 @@ function LoginForm() {
       },
       body: JSON.stringify(formData),
     })
-      .then(response => response.json())
+      .then(response => response.ok ? response.json() : Promise.reject('Usuario o contraseña incorrectos'))
       .then(data => {
-        console.log(data);
-        if (isLogin && data.user_type) {
-          // Redirigir según el tipo de usuario
-          if (data.user_type === 'conductor') {
-            navigate('/conductor-dashboard'); // Redirige a la página del conductor
-          } else if (data.user_type === 'pasajero') {
-            navigate('/pasajero-dashboard'); // Redirige a la página del pasajero
+        console.log("Respuesta del servidor:", data);
+
+        if (isLogin && data.tipo_usuario) {
+          // Redirige según el tipo de usuario después de login exitoso
+          if (data.tipo_usuario === 'conductor') {
+            console.log("redirigiendo a conductor:", data.tipo_usuario);
+            navigate('/conductor-dashboard');
+          } else if (data.tipo_usuario === 'pasajero') {
+            console.log("redirigiendo a pasajero:", data.tipo_usuario);
+            navigate('/pasajero-dashboard');
+          } else {
+            setError("Tipo de usuario no reconocido");
           }
+        } else if (!isLogin) {
+          // Cambia a modo de login después de un registro exitoso
+          setIsLogin(true);
+          setError("Registro exitoso, ahora puedes iniciar sesión");
         }
       })
-      .catch(error => console.error('Error:', error));
+      .catch(error => setError(error));
   };
 
   return (
@@ -114,6 +127,7 @@ function LoginForm() {
         </div>
         <button type="submit">{isLogin ? 'Iniciar' : 'Registrarse'}</button>
       </form>
+      <p>{error && <span className="error">{error}</span>}</p>
       <p>
         {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
         <span onClick={() => setIsLogin(!isLogin)} className="toggle-link">

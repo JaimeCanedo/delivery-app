@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './style.css'; // Importa tu archivo CSS personalizado
+import './estilos/style.css'; // Importa tu archivo CSS personalizado
 
 function CreateUserForm() {
   const [formData, setFormData] = useState({
