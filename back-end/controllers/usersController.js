@@ -18,7 +18,8 @@ const loginUser = async (req, res) => {
 
         if (user) {
             const tipoUsuario = user.tipo_usuario;
-            return res.json({ tipo_usuario: tipoUsuario, message: 'Inicio de sesión exitoso' });
+            const idConductor = user.id;
+            return res.json({ tipo_usuario: tipoUsuario, id: idConductor, message: 'Inicio de sesión exitoso' });
         } else {
             return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
         }

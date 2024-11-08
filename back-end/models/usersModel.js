@@ -8,7 +8,7 @@ const findAll = async () => {
 
 export const authUser = async (name, password) => {
     try {
-        const query = "SELECT tipo_usuario FROM usuarios WHERE nombre = $1 AND contraseña = $2";
+        const query = "SELECT id,tipo_usuario FROM usuarios WHERE nombre = $1 AND contraseña = $2";
         const values = [name, password];
         const {rows} = await pool.query(query, values);
         return rows[0];  // Retorna el usuario encontrado o undefined si no existe

@@ -67,10 +67,26 @@ const deleteVehicle = async (req, res) => {
     }
 };
 
+const checkVehicle = async (req, res) => {
+    const { conductor_id } = req.params;
+    try {
+        const vehiculos = await vehiclesModel.getVehicleByDriverId(conductor_id); 
+        if (vehiculos.length > 0) {
+            return res.json({ vehicles: vehiculos }); 
+        } else {
+            return res.status(404).json({ message: 'No se encontraron vehículos' });
+        }
+    } catch (error) {
+        console.error('Error al buscar vehículos por ID:', error);
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
 export const vehiclesController = {
     getAll,
     getVehicleById, 
     createVehicle,
     updateVehicle,
-    deleteVehicle
+    deleteVehicle,
+    checkVehicle,
 };

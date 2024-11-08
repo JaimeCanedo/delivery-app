@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './estilos/login.css'; // Importa tu archivo CSS personalizado
+import './estilos/login.css'; 
 
 function LoginForm() {
   const [formData, setFormData] = useState({
@@ -14,7 +14,6 @@ function LoginForm() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Actualiza el estado cuando los inputs cambian
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -23,7 +22,6 @@ function LoginForm() {
     });
   };
 
-  // Manejo del formulario de login o registro
   const handleSubmit = (e) => {
     e.preventDefault();
     const url = isLogin ? 'http://localhost:5000/api/login' : 'http://localhost:5000/api/users';
@@ -40,10 +38,9 @@ function LoginForm() {
         console.log("Respuesta del servidor:", data);
 
         if (isLogin && data.tipo_usuario) {
-          // Redirige según el tipo de usuario después de login exitoso
           if (data.tipo_usuario === 'conductor') {
             console.log("redirigiendo a conductor:", data.tipo_usuario);
-            navigate('/conductor-dashboard');
+            navigate('/conductor-dashboard', { state: { driver_id: data.id } });
           } else if (data.tipo_usuario === 'pasajero') {
             console.log("redirigiendo a pasajero:", data.tipo_usuario);
             navigate('/pasajero-dashboard');
@@ -51,7 +48,6 @@ function LoginForm() {
             setError("Tipo de usuario no reconocido");
           }
         } else if (!isLogin) {
-          // Cambia a modo de login después de un registro exitoso
           setIsLogin(true);
           setError("Registro exitoso, ahora puedes iniciar sesión");
         }

@@ -54,10 +54,25 @@ const deleteVehicle = async (id) => {
     }
 };
 
+const getVehicleByDriverId = async (conductor_id) => {
+    try {
+        console.log("Ejecutando consulta para driver_id:", conductor_id);
+        const query = 'SELECT * FROM vehiculos WHERE conductor_id = $1';
+        const values = [conductor_id];
+        const result = await pool.query(query, values);
+        console.log("Resultado de la consulta:", result.rows);
+        return result.rows;
+    } catch (error) {
+        console.error('Error en getVehicleByDriverId:', error);
+        throw error;
+    }
+};
+
 export const vehiclesModel = {
     findAll, 
     getVehicleById,
     createVehicle, 
     updateVehicle,
-    deleteVehicle
+    deleteVehicle,
+    getVehicleByDriverId,
 };

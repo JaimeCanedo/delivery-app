@@ -22,6 +22,7 @@ router.get('/vehicles/:id', vehiclesController.getVehicleById);
 router.post('/vehicles/', vehiclesController.createVehicle);
 router.put('/vehicles/:id', vehiclesController.updateVehicle);
 router.delete('/vehicles/:id', vehiclesController.deleteVehicle);
+router.get('/check-vehicle/:conductor_id', vehiclesController.checkVehicle);
 
 router.get('/trips/', tripsController.getAll);
 router.get('/trips/:id', tripsController.getTripById);
